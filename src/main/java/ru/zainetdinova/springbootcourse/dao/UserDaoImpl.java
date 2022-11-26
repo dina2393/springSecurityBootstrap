@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 import ru.zainetdinova.springbootcourse.model.User;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 
@@ -29,13 +30,13 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public User getUser(long id) {
+    public User getUser(int id) {
         User user = entityManager.find(User.class, id);
         return user;
     }
 
     @Override
-    public void deleteUser(long id) {
+    public void deleteUser(int id) {
         Query<User> query = (Query<User>) entityManager.createQuery("delete from User u where id =:userId");
         query.setParameter("userId",id);
         query.executeUpdate();
@@ -46,6 +47,14 @@ public class UserDaoImpl implements UserDao {
     public void updateUser(User user) {
         entityManager.merge(user);
 
+    }
+
+    @Override
+    public User getUserByName(String userName) {
+            User user = entityManager.createQuery("select u from User u where u.userName = :name", User.class)
+                    .setParameter("name", userName)
+                    .getSingleResult();
+            return user;
     }
 
 }

@@ -10,21 +10,25 @@
 <table>
     <tr>
         <th>Name</th>
-        <th>Last Name</th>
-        <th>Age</th>
-        <th>Operations</th>
+        <th>Password</th>
+
     </tr>
     <tr th:each="user: ${allUsers}">
-        <td th:text="${user.getFirstName()}"/>
-        <td th:text="${user.getLastName()}"/>
-        <td th:text="${user.getAge()}"/>
-        <td><input type="button" value="UPDATE" th:data-url="@{/updateInfo/{id}/(id=${user.getId()})}"
+        <td th:text="${user.getUserName()}"/>
+        <td th:text="${user.getPassword()}"/>
+
+        <td><input type="button" value="UPDATE" th:data-url="@{/admin/updateInfo/{id}/(id=${user.getId()})}"
                    onclick="window.location.href= this.getAttribute('data-url');"/>
-            <input type="button" value="DELETE" th:data-url="@{/deleteUser/{id}/(id=${user.getId()})}"
+            <input type="button" value="DELETE" th:data-url="@{/admin/deleteUser/{id}/(id=${user.getId()})}"
                    onclick="window.location.href= this.getAttribute('data-url');"/>
 
     </tr>
 </table>
 <br>
 <input type="button" value="Add"
-       onclick="window.location.href='addNewUser'"/>
+       onclick="window.location.href='admin/addNewUser'"/>
+    <br/><br>
+    <form th:action="@{/logout}" th:method="POST">
+        <input type="submit" value="LOGOUT"/>
+    </form>
+

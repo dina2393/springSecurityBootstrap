@@ -18,18 +18,27 @@ public class Role implements GrantedAuthority {
     @Column(name = "role")
     private String role;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "user_role"
-            ,joinColumns = @JoinColumn(name = "role_id")
-            ,inverseJoinColumns = @JoinColumn(name = "user_id")
-    )
+//    @ManyToMany(fetch = FetchType.LAZY)
+//    @JoinTable(
+//            name = "user_role"
+//            ,joinColumns = @JoinColumn(name = "role_id")
+//            ,inverseJoinColumns = @JoinColumn(name = "user_id")
+//    )
+    @ManyToMany(mappedBy = "roles")
     private Set<User> users;
 
     public Role(){}
 
     public Role(String role) {
         this.role =role;
+    }
+    public Role(int id, String role) {
+        this.id = id;
+        this.role =role;
+
+    }
+    public Role(int id) {
+        this.id = id;
     }
 //    public void addUserToRole(User user) {
 //        if (users == null){
@@ -39,7 +48,7 @@ public class Role implements GrantedAuthority {
 //        }
 //    }
 
-    public int getId() {return id;}
+    public long getId() {return id;}
     public void setId(int id) {this.id = id;}
 
     public String getRole() {return role;}

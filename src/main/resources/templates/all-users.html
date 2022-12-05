@@ -11,11 +11,18 @@
     <tr>
         <th>Name</th>
         <th>Password</th>
+        <th>Last name</th>
+        <th>Age</th>
+        <th>Name</th>
+        <th>Email</th>
 
     </tr>
     <tr th:each="user: ${allUsers}">
         <td th:text="${user.getUserName()}"/>
         <td th:text="${user.getPassword()}"/>
+        <td th:text="${user.getLastName()}"/>
+        <td th:text="${user.getAge()}"/>
+        <td th:text="${user.getEmail()}"/>
 
         <td><input type="button" value="UPDATE" th:data-url="@{/admin/updateInfo/{id}/(id=${user.getId()})}"
                    onclick="window.location.href= this.getAttribute('data-url');"/>

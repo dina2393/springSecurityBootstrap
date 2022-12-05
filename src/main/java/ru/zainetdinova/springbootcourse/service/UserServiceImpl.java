@@ -14,8 +14,7 @@ import ru.zainetdinova.springbootcourse.dao.UserDao;
 import ru.zainetdinova.springbootcourse.model.Role;
 import ru.zainetdinova.springbootcourse.model.User;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class UserServiceImpl implements UserService, UserDetailsService {
@@ -37,13 +36,26 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
     @Transactional
     @Override
-    public void saveUser(User user) {
+    public void saveNewUser(User user, String role) {
+        Set<Role> roles = new HashSet<>();
+        if(role==null) {
+            Role newRole = roleDao.getRoleByName("ROLE_USER");
+            roles.add(newRole);
+        } else {
+            roles.add(roleDao.getRoleByName(role));
+        }
+        user.setRoles(roles);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        userDao.saveUser(user);
+    }
 
+    @Transactional
+    @Override
+    public void saveUser(User user) {
+//
         Role roleUser = roleDao.getRoleByName("ROLE_USER");
         user.addRoleToUser(roleUser);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-
-
         userDao.saveUser(user);
     }
     @Transactional
@@ -59,6 +71,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Transactional
     @Override
     public void updateUser(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userDao.updateUser(user);
     }
 
